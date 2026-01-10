@@ -12,7 +12,7 @@ function fetch_report(cb) {
 	var cmds = ["sysinfo", "vmadm lookup -j", "imgadm list -j"];
 	async.map(cmds,
 		function(cmd, cb) {
-			exec(cmd, function(err, stdout, stderr) {
+			exec(cmd, {maxBuffer: 32*1024*1024}, function(err, stdout, stderr) {
 				if (err) return cb(err);
 				cb(null, JSON.parse(stdout));
 			})
