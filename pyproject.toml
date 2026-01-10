@@ -1,6 +1,6 @@
 [project]
 name = "netbox-smartos"
-version = "26.1.10.0"
+version = "26.1.10.1"
 authors = [
     { name="SkyLime GmbH", email="info@skylime.net" },
 ]
@@ -16,7 +16,7 @@ dependencies = [
 [tool.setuptools]
 include-package-data = true
 packages = ["netbox_smartos"]
-package-data = {prefix_registry = ["**/*", "templates/**"]}
+package-data = {netbox_smartos = ["**/*", "templates/**"]}
 
 [tool.ruff.format]
 
