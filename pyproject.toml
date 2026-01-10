@@ -1,0 +1,40 @@
+[project]
+name = "netbox-smartos"
+version = "26.1.10.0"
+authors = [
+    { name="SkyLime GmbH", email="info@skylime.net" },
+]
+description = ""
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "django-annoying>=0.10.8",
+]
+
+[tool.setuptools]
+include-package-data = true
+packages = ["netbox_smartos"]
+package-data = {prefix_registry = ["**/*", "templates/**"]}
+
+[tool.ruff.format]
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 90
+
+[tool.pytest.ini_options]
+addopts = "-vvvv  --fail-on-template-vars --disable-socket --allow-hosts=redis --no-migrations"
+DJANGO_SETTINGS_MODULE = "netbox.settings"
+filterwarnings = [
+    "ignore::django.utils.deprecation.RemovedInDjango61Warning::",
+    "ignore::django.utils.deprecation.RemovedInDjango60Warning::",
+    "ignore::DeprecationWarning:functools.*:",
+    "ignore::DeprecationWarning:circuits.*:",
+    "ignore::DeprecationWarning:dcim.*:",
+    "ignore::DeprecationWarning:django_tables2.*:",
+]
