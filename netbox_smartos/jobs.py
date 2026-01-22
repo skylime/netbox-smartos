@@ -13,7 +13,7 @@ from netbox.registry import registry
 from users.models import User
 from utilities.request import NetBoxFakeRequest
 from virtualization.choices import VirtualMachineStatusChoices
-from virtualization.models import VirtualMachine
+from virtualization.models import VirtualMachine, VMInterface
 
 from netbox_smartos.custom_fields import ensure_custom_fields_exist
 
@@ -209,6 +209,7 @@ class ProcessSmartOSReportJob(JobRunner):
                 if nic.has_changed:
                     nic.save()
 
+                primary = nic_info.get("primary", False)
                 addrs = []
                 for addr in nic_info.get("ips", []):
                     if addr in ["dhcp", "addrconf"]:
@@ -228,7 +229,10 @@ class ProcessSmartOSReportJob(JobRunner):
 
                     update_attr(addr, "address", ip_addr)
 
-                    # TODO: if primary nic we could also set this as primary so on vm
+                    if primary and addr.family == 4:
+                        update_attr(vm, "primary_ip4", addr)
+                    if primary and addr.family == 6:
+                        update_attr(vm, "primary_ip6", addr)
 
                     if addr.has_changed:
                         addr.save()
@@ -236,6 +240,9 @@ class ProcessSmartOSReportJob(JobRunner):
                     addrs += [addr]
 
                 nic.ip_addresses.set(addrs)
+
+            if vm.has_changed:
+                vm.save()
 
         device.smartos_report.last_processed = timezone.now()
         device.smartos_report.save()
