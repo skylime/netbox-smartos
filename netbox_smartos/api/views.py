@@ -18,6 +18,11 @@ class DeviceReportView(APIView):
     serializer_class = SmartOSReportSerializer
     queryset = Device.objects.all()
 
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        kwargs["context"] = self.get_serializer_context()
+        return serializer_class(*args, **kwargs)
+
     def post(self, request):
         serializer = SmartOSReportSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

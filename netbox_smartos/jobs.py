@@ -13,7 +13,7 @@ from netbox.registry import registry
 from users.models import User
 from utilities.request import NetBoxFakeRequest
 from virtualization.choices import VirtualMachineStatusChoices
-from virtualization.models import VirtualMachine, VMInterface
+from virtualization.models import VirtualMachine
 
 from netbox_smartos.custom_fields import ensure_custom_fields_exist
 
